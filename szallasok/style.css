@@ -1,0 +1,75 @@
+body{
+    background-image: url('hatter.jpeg');
+}
+
+#focim{
+    text-align: center;
+    color: white;
+    font-weight: 400;
+}
+
+.navFelirat{
+    color: gray;
+}
+
+.card{
+    text-align: center;
+    margin: 20px;
+    border: 2px solid black;
+    border-radius: 10px;
+    float: left;
+}
+
+.btn{
+    display: inline-block;
+    border: 2px solid black;
+    background-color: white;
+    color: black;
+    font-weight: bold;
+}
+
+.btn:hover{
+    border: 2px solid black;
+    background-color: black;
+}
+
+#kartyak{
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 295px;
+    padding-right: 100px;
+    padding-top: 50px;
+    width: 100%;
+    height: 100%;
+}
+
+.card h5{
+    text-shadow: 5px 5px 10px #000000;
+}
+
+.container{
+    display: flex;
+    justify-content: space-between;
+}
+
+label{
+    color: white;
+}
+
+#adatok{
+    width: 400px;
+    margin: auto;
+    margin-top: 100px;
+}
+
+#ujGomb{
+    margin-left: 105px;
+    margin-top: 20px;
+}
+
+#kezdo{
+    font-size: 5rem;
+    color: white;
+    text-align: center;
+    margin-top: 300px;
+}
