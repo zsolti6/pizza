@@ -36,6 +36,10 @@ function ujKartya(data){
 }
 
 function postKartya(){
+        if(vanUres()){
+                alert("Hiányzó adat!");
+                return;
+        }
         let adatok = JSON.stringify({
                 name: document.getElementById("nev").value,
                 hostname: document.getElementById("hostname").value,
@@ -68,16 +72,16 @@ function postKartya(){
 function ujszallasMenu(){
         document.getElementById('tartalom').innerHTML = 
         `<div class="form-group" id="adatok">
-                <label for="nev">Name:</label>
-                <input type="text" class="form-control" id="nev">
-                <label for="hostname">Hostname:</label>
-                <input type="text" class="form-control" id="hostname">
-                <label for="location">Location:</label>
-                <input type="text" class="form-control" id="location">
-                <label for="price">Price:</label>
-                <input type="number" class="form-control" id="price">
-                <label for="minimum_nights">Minimum-nights:</label>
-                <input type="text" class="form-control" id="minimum_nights">
+                <label for="nev">Név:</label>
+                <input type="text" class="form-control" id="nev" placeholder="Example2">
+                <label for="hostname">Weboldal címe:</label>
+                <input type="text" class="form-control" id="hostname" placeholder="booking.com">
+                <label for="location">Cím:</label>
+                <input type="text" class="form-control" id="location" placeholder="City2">
+                <label for="price">Ár:</label>
+                <input type="number" class="form-control" id="price" placeholder="0">
+                <label for="minimum_nights">Éjszakák száma:</label>
+                <input type="text" class="form-control" id="minimum_nights" placeholder="1 éjszaka">
                 <input type="button" id="ujGomb" class="btn btn-primary" onclick="postKartya()" value="Új szállás hozzáadása">
         </div>`;
 }
@@ -94,16 +98,16 @@ function putKartyaSetup(id){
         .then(function(data) {
                 document.getElementById('tartalom').innerHTML = 
                 `<div class="form-group" id="adatok">
-                        <label for="nev">Name:</label>
-                        <input type="text" class="form-control" id="nev" value="${data.name}">
-                        <label for="hostname">Hostname:</label>
-                        <input type="text" class="form-control" id="hostname" value="${data.hostname}">
-                        <label for="location">Location:</label>
-                        <input type="text" class="form-control" id="location" value="${data.location}">
-                        <label for="price">Price:</label>
-                        <input type="number" class="form-control" id="price" value="${data.price}">
-                        <label for="minimum_nights">Minimum_nights:</label>
-                        <input type="text" class="form-control" id="minimum_nights" value="${data.minimum_nights}">
+                        <label for="nev">Név:</label>
+                        <input type="text" class="form-control" id="nev" value="${data.name}" placeholder="Example2">
+                        <label for="hostname">Weboldal címe:</label>
+                        <input type="text" class="form-control" id="hostname" value="${data.hostname}" placeholder="booking.com">
+                        <label for="location">Cím:</label>
+                        <input type="text" class="form-control" id="location" value="${data.location}" placeholder="City2">
+                        <label for="price">Ár:</label>
+                        <input type="number" class="form-control" id="price" value="${data.price}" placeholder="0">
+                        <label for="minimum_nights">Éjszakák száma:</label>
+                        <input type="text" class="form-control" id="minimum_nights" value="${data.minimum_nights}" placeholder="1 éjszaka">
                         <input type="button" id="ujGomb" class="btn btn-primary" onclick="putKartya(${data.id})" value="Szállás módosítása">
                 </div>`;
         }).catch(error => {
@@ -113,6 +117,10 @@ function putKartyaSetup(id){
 }
 
 function putKartya(id){
+        if(vanUres()){
+                alert("Hiányzó adat!");
+                return;
+        }
         let bodyForPut = JSON.stringify({
                 hostname: document.getElementById("hostname").value,
                 location: document.getElementById("location").value,
@@ -147,4 +155,12 @@ function deleteKartya(id){
                 console.error('Hiba történt a kérés során:', error);
                 alert('Hiba történt az adatok lekérése közben.');
         });
+}
+
+function vanUres(){
+        return document.getElementById("hostname").value == "" || 
+        document.getElementById("location").value == "" || 
+        document.getElementById("minimum_nights").value == "" || 
+        document.getElementById("nev").value == "" || 
+        document.getElementById("price").value == "";
 }
