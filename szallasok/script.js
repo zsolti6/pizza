@@ -22,17 +22,38 @@ function ujKartya(data){
         `<div class="card" style="width: 18rem;">
                 <div class="card-body">
                         <h5 class="card-title">${data.name}</h5>
-                        <p>${data.hostname}</p>
                         <p class="card-text">${data.location}</p>
-                        <p class="card-text">${data.price}</p>
-                        <p class="card-text">${data.minimum_nights}</p>
                         <a href="#" class="btn btn-primary" onclick="deleteKartya(${data.id})">Törlés</a>
-                        <a href="#" class="btn btn-primary">Részletek</a>
+                        <a href="#" class="btn btn-primary" onclick="reszletesKartya(${data.id})">Részletek</a>
                         <a href="#" class="btn btn-primary" onclick="putKartyaSetup(${data.id})">Módosítás</a>
                 </div>
         </div>`
 
         return kartya;
+}
+
+function reszletesKartya(id){
+        fetch("https://www.nodejs.sulla.hu/data/" + id)
+        .then(function(datas) {
+                return datas.json();
+        })
+        .then(function(data) {
+                document.getElementById('tartalom').innerHTML = 
+                `<div class="card reszletes" style="width: 18rem;">
+                        <div class="card-body">
+                                <h5 class="card-title">${data.name}</h5>
+                                <p>${data.hostname}</p>
+                                <p class="card-text">${data.location}</p>
+                                <p class="card-text">${data.price}</p>
+                                <p class="card-text">${data.minimum_nights}</p>
+                                <a href="#" class="btn btn-primary" onclick="deleteKartya(${data.id})">Törlés</a>
+                                <a href="#" class="btn btn-primary" onclick="putKartyaSetup(${data.id})">Módosítás</a>
+                        </div>
+                </div>`;
+        }).catch(error => {
+                console.error('Hiba történt a kérés során:', error);
+                alert('Hiba történt az adatok lekérése közben.');
+        });
 }
 
 function postKartya(){
@@ -45,7 +66,7 @@ function postKartya(){
                 hostname: document.getElementById("hostname").value,
                 location: document.getElementById("location").value,
                 price: parseInt(document.getElementById("price").value),
-                minimum_nights: document.getElementById("minimum_nights").value
+                minimum_nights: document.getElementById("minimum_nights").value + " éjszaka"
         });
 
         fetch("https://nodejs.sulla.hu/data",{
@@ -57,7 +78,7 @@ function postKartya(){
         })
         .then((res) => {
         if(res) {
-                return fetch("https://nodejs.sulla.hu/data")
+                return fetch("https://nodejs.sulla.hu/data");
         }
         })
         .then((res) => res.json())
@@ -81,7 +102,7 @@ function ujszallasMenu(){
                 <label for="price">Ár:</label>
                 <input type="number" class="form-control" id="price" placeholder="0">
                 <label for="minimum_nights">Éjszakák száma:</label>
-                <input type="text" class="form-control" id="minimum_nights" placeholder="1 éjszaka">
+                <input type="number" class="form-control" id="minimum_nights" placeholder="1">
                 <input type="button" id="ujGomb" class="btn btn-primary" onclick="postKartya()" value="Új szállás hozzáadása">
         </div>`;
 }
@@ -107,7 +128,7 @@ function putKartyaSetup(id){
                         <label for="price">Ár:</label>
                         <input type="number" class="form-control" id="price" value="${data.price}" placeholder="0">
                         <label for="minimum_nights">Éjszakák száma:</label>
-                        <input type="text" class="form-control" id="minimum_nights" value="${data.minimum_nights}" placeholder="1 éjszaka">
+                        <input type="number" class="form-control" id="minimum_nights" value="${parseInt(data.minimum_nights)}" placeholder="1">
                         <input type="button" id="ujGomb" class="btn btn-primary" onclick="putKartya(${data.id})" value="Szállás módosítása">
                 </div>`;
         }).catch(error => {
@@ -121,10 +142,11 @@ function putKartya(id){
                 alert("Hiányzó adat!");
                 return;
         }
+
         let bodyForPut = JSON.stringify({
                 hostname: document.getElementById("hostname").value,
                 location: document.getElementById("location").value,
-                minimum_nights: document.getElementById("minimum_nights").value,
+                minimum_nights: document.getElementById("minimum_nights").value + " éjszaka",
                 name: document.getElementById("nev").value,
                 price: Number(document.getElementById("price").value)
         });
